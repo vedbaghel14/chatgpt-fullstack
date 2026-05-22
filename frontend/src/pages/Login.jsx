@@ -211,14 +211,14 @@ export default function Login() {
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>📧</span>
               <input
-                style={inputStyle}
+                style={inputStyle(false)}
                 className="login-input-mobile"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onFocus={(e) => Object.assign(e.target, inputStyle(true))}
-                onBlur={(e) => Object.assign(e.target, inputStyle(false))}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
                 autoComplete="email"
               />
             </div>
@@ -228,14 +228,14 @@ export default function Login() {
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>🔒</span>
               <input
-                style={inputStyle}
+                style={inputStyle(false)}
                 className="login-input-mobile"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                onFocus={(e) => Object.assign(e.target, inputStyle(true))}
-                onBlur={(e) => Object.assign(e.target, inputStyle(false))}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
                 autoComplete="current-password"
               />
             </div>
