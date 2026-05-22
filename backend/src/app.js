@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cookieparser())
 app.use('/api/auth',authrouter)
 app.use('/api/chat',chatrouter)
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname,'..','public')))
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..','public', 'index.html'))
