@@ -168,7 +168,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { register: registerUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -184,7 +184,7 @@ export default function Register() {
     }
     setLoading(true);
     try {
-      await register(fullname, email, password);
+      await registerUser(fullname, email, password);
       navigate('/chat');
     } catch (err) {
       setError(err.message);
@@ -197,73 +197,73 @@ export default function Register() {
     <div style={styles.container}>
       <div style={styles.bgOrb1} />
       <div style={styles.bgOrb2} />
-      <div style={styles.card} className="animate-scale-in">
+      <div style={styles.card} className="animate-scale-in register-card-mobile">
         <div style={styles.logoContainer}>
-          <div style={styles.logoIcon}>✨</div>
+          <div style={styles.logoIcon}>🤖</div>
+          <h1 style={styles.title} className="register-title-mobile">ChatGPT Clone</h1>
         </div>
-        <h1 style={styles.title}>Get Started</h1>
-        <p style={styles.subtitle}>Create your account to chat with Gemini AI</p>
-
+        <p style={styles.subtitle}>Create your account</p>
         {error && <div style={styles.error}>{error}</div>}
-
         <form onSubmit={handleSubmit}>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Full Name</label>
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>👤</span>
               <input
+                style={styles.input}
+                className="register-input-mobile"
                 type="text"
                 placeholder="John Doe"
                 value={fullname}
                 onChange={(e) => setFullname(e.target.value)}
-                style={styles.input}
                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
+                autoComplete="name"
               />
             </div>
           </div>
-
           <div style={styles.inputGroup}>
             <label style={styles.label}>Email</label>
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>📧</span>
               <input
+                style={styles.input}
+                className="register-input-mobile"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={styles.input}
                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
+                autoComplete="email"
               />
             </div>
           </div>
-
           <div style={styles.inputGroup}>
             <label style={styles.label}>Password</label>
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>🔒</span>
               <input
+                style={styles.input}
+                className="register-input-mobile"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Min 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={styles.input}
                 onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
+                autoComplete="new-password"
               />
             </div>
           </div>
-
           <button
+            style={{ ...styles.button, ...(loading ? styles.buttonDisabled : {}) }}
             type="submit"
             disabled={loading}
-            style={{ ...styles.button, ...(loading ? styles.buttonDisabled : {}) }}
           >
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
-
         <div style={styles.footer}>
           Already have an account?{' '}
           <Link to="/login" style={styles.link}>Sign in</Link>

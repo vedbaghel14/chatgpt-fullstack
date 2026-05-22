@@ -251,7 +251,7 @@ const styles = {
   },
 };
 
-export default function Sidebar({ chats, activeChat, onSelectChat, onNewChat, user, onLogout, collapsed }) {
+export default function Sidebar({ chats, activeChat, onSelectChat, onNewChat, user, onLogout, collapsed, isMobile, sidebarOpen }) {
   const [creating, setCreating] = useState(false);
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [chatName, setChatName] = useState('');
@@ -283,12 +283,19 @@ export default function Sidebar({ chats, activeChat, onSelectChat, onNewChat, us
     }
   };
 
+  // Compute sidebar className based on mobile/desktop state
+  const sidebarClass = isMobile
+    ? 'sidebar-mobile' + (sidebarOpen ? ' open' : '')
+    : '';
+  const chatItemClass = isMobile ? 'chat-item-mobile' : '';
+  const dialogClass = isMobile ? 'dialog-mobile' : '';
+
   return (
     <>
       {/* Chat Name Dialog Overlay */}
       {showNameDialog && (
         <div style={styles.overlay} onClick={() => setShowNameDialog(false)}>
-          <div style={styles.dialog} onClick={(e) => e.stopPropagation()}>
+          <div style={styles.dialog} className={dialogClass} onClick={(e) => e.stopPropagation()}>
             <h3 style={styles.dialogTitle}>New Chat</h3>
             <p style={styles.dialogSubtitle}>Enter a name for your chat</p>
             <input
@@ -318,11 +325,17 @@ export default function Sidebar({ chats, activeChat, onSelectChat, onNewChat, us
         </div>
       )}
 
-      <aside style={{ ...styles.sidebar, ...(collapsed ? styles.sidebarCollapsed : {}) }}>
+      <aside
+        style={{
+          ...styles.sidebar,
+          ...(collapsed && !isMobile ? styles.sidebarCollapsed : {}),
+        }}
+        className={sidebarClass}
+      >
         <div style={styles.header}>
           <div style={styles.logo}>
-            <div style={styles.logoIcon}>✨</div>
-            <span style={styles.logoText}>Gemini Chat</span>
+            <div style={styles.logoIcon}>🤖</div>
+            <span style={styles.logoText}>ChatGPT Clone</span>
           </div>
         </div>
 
@@ -348,8 +361,8 @@ export default function Sidebar({ chats, activeChat, onSelectChat, onNewChat, us
                   ...styles.chatItem,
                   ...(activeChat?._id === chat._id || activeChat === chat._id ? styles.chatItemActive : {}),
                 }}
+                className={`animate-fade-in ${chatItemClass}`}
                 onClick={() => onSelectChat(chat)}
-                className="animate-fade-in"
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-hover)'; }}
                 onMouseLeave={(e) => {
                   if (activeChat?._id !== chat._id && activeChat !== chat._id) {

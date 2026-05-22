@@ -225,7 +225,7 @@ const suggestions = [
   'Tell me a fun fact',
 ];
 
-export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed }) {
+export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed, isMobile }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -301,27 +301,38 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
     setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
+  // Mobile helper classes
+  const topBarClass = isMobile ? 'topbar-mobile' : '';
+  const messagesAreaClass = isMobile ? 'messages-area-mobile' : '';
+  const inputBarClass = isMobile ? 'inputbar-mobile' : '';
+  const welcomeTitleClass = isMobile ? 'welcome-title-mobile' : '';
+  const welcomeSubtitleClass = isMobile ? 'welcome-subtitle-mobile' : '';
+  const suggestionsRowClass = isMobile ? 'suggestions-row-mobile' : '';
+  const suggestionChipClass = isMobile ? 'suggestion-chip-mobile' : '';
+  const sendBtnClass = isMobile ? 'send-btn-mobile' : '';
+
   if (!chat) {
     return (
-      <div style={styles.container}>
-        <div style={styles.topBar}>
+      <div style={styles.container} className={isMobile ? 'chat-area-mobile' : ''}>
+        <div style={styles.topBar} className={topBarClass}>
           <button style={styles.toggleBtn} onClick={onToggleSidebar}>
             {sidebarCollapsed ? '☰' : '✕'}
           </button>
-          <span style={styles.chatTitle}>Gemini AI Chat</span>
+          <span style={styles.chatTitle}>ChatGPT Clone</span>
           <div style={{ ...styles.connectionDot, ...(connected ? styles.connectionDotConnected : styles.connectionDotDisconnected) }} />
         </div>
         <div style={styles.welcomeContainer}>
-          <div style={styles.welcomeIcon}>✨</div>
-          <h1 style={styles.welcomeTitle}>Welcome to Gemini AI</h1>
-          <p style={styles.welcomeSubtitle}>
+          <div style={styles.welcomeIcon}>🤖</div>
+          <h1 style={styles.welcomeTitle} className={welcomeTitleClass}>Welcome to ChatGPT Clone</h1>
+          <p style={styles.welcomeSubtitle} className={welcomeSubtitleClass}>
             Start a new conversation or select an existing chat from the sidebar. Ask me anything — I'm here to help!
           </p>
-          <div style={styles.suggestionsRow}>
+          <div style={styles.suggestionsRow} className={suggestionsRowClass}>
             {suggestions.map((s, i) => (
               <button
                 key={i}
                 style={styles.suggestionChip}
+                className={suggestionChipClass}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
               >
@@ -335,8 +346,8 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.topBar}>
+    <div style={styles.container} className={isMobile ? 'chat-area-mobile' : ''}>
+      <div style={styles.topBar} className={topBarClass}>
         <button style={styles.toggleBtn} onClick={onToggleSidebar}>
           {sidebarCollapsed ? '☰' : '✕'}
         </button>
@@ -347,17 +358,18 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
         />
       </div>
 
-      <div style={styles.messagesArea}>
+      <div style={styles.messagesArea} className={messagesAreaClass}>
         {messages.length === 0 && (
           <div style={styles.welcomeContainer}>
             <div style={styles.welcomeIcon}>💬</div>
-            <h1 style={styles.welcomeTitle}>Start the Conversation</h1>
-            <p style={styles.welcomeSubtitle}>Send a message below to chat with Gemini AI</p>
-            <div style={styles.suggestionsRow}>
+            <h1 style={styles.welcomeTitle} className={welcomeTitleClass}>Start the Conversation</h1>
+            <p style={styles.welcomeSubtitle} className={welcomeSubtitleClass}>Send a message below to chat with ChatGPT</p>
+            <div style={styles.suggestionsRow} className={suggestionsRowClass}>
               {suggestions.map((s, i) => (
                 <button
                   key={i}
                   style={styles.suggestionChip}
+                  className={suggestionChipClass}
                   onClick={() => handleSuggestion(s)}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
@@ -369,12 +381,12 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
           </div>
         )}
         {messages.map((msg, i) => (
-          <Message key={i} msg={msg} isUser={msg.role === 'user'} firstname={user?.firstname} />
+          <Message key={i} msg={msg} isUser={msg.role === 'user'} firstname={user?.firstname} isMobile={isMobile} />
         ))}
         {isTyping && (
-          <div style={styles.messageRow}>
-            <div style={styles.avatarAI}>✨</div>
-            <div style={styles.bubble}>
+          <div style={styles.messageRow} className={isMobile ? 'msg-row-mobile' : ''}>
+            <div style={styles.avatarAI} className={isMobile ? 'msg-avatar-mobile' : ''}>🤖</div>
+            <div style={styles.bubble} className={isMobile ? 'msg-bubble-mobile' : ''}>
               <div style={styles.typingIndicator}>
                 {[0, 1, 2].map((i) => (
                   <div
@@ -392,11 +404,12 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
         <div ref={messagesEndRef} />
       </div>
 
-      <div style={styles.inputBar}>
+      <div style={styles.inputBar} className={inputBarClass}>
         <div style={styles.inputWrapper}>
           <textarea
             ref={textareaRef}
             style={styles.textarea}
+            className={isMobile ? 'textarea-mobile' : ''}
             placeholder="Type your message... (Shift+Enter for new line)"
             value={input}
             onChange={handleInput}
@@ -414,6 +427,7 @@ export default function ChatArea({ chat, user, onToggleSidebar, sidebarCollapsed
         </div>
         <button
           style={{ ...styles.sendBtn, ...(!input.trim() || isTyping ? styles.sendBtnDisabled : {}) }}
+          className={sendBtnClass}
           onClick={handleSend}
           disabled={!input.trim() || isTyping}
         >

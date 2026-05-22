@@ -11,6 +11,20 @@ const styles = {
     height: '100vh',
     overflow: 'hidden',
   },
+  backdrop: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0, 0, 0, 0.55)',
+    zIndex: 99,
+    opacity: 0,
+    pointerEvents: 'none',
+    transition: 'opacity 0.3s ease',
+    WebkitTapHighlightColor: 'transparent',
+  },
+  backdropVisible: {
+    opacity: 1,
+    pointerEvents: 'auto',
+  },
 };
 
 export default function ChatPage() {
@@ -18,7 +32,15 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -40,18 +62,35 @@ export default function ChatPage() {
   const handleNewChat = (chat) => {
     setChats((prev) => [chat, ...prev]);
     setActiveChat(chat);
+    if (isMobile) setSidebarOpen(false);
   };
 
   const handleSelectChat = (chat) => {
     setActiveChat(chat);
+    if (isMobile) setSidebarOpen(false);
   };
 
   const toggleSidebar = () => {
-    setSidebarCollapsed((prev) => !prev);
+    if (isMobile) {
+      setSidebarOpen((prev) => !prev);
+    } else {
+      setSidebarOpen((prev) => !prev);
+    }
   };
 
+  const closeSidebar = () => setSidebarOpen(false);
+
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="chat-container">
+      {/* Mobile backdrop */}
+      {isMobile && (
+        <div
+          style={{ ...styles.backdrop, ...(sidebarOpen ? styles.backdropVisible : {}) }}
+          className={sidebarOpen ? 'sidebar-backdrop visible' : 'sidebar-backdrop'}
+          onClick={closeSidebar}
+        />
+      )}
+
       <Sidebar
         chats={chats}
         activeChat={activeChat}
@@ -59,13 +98,16 @@ export default function ChatPage() {
         onNewChat={handleNewChat}
         user={user}
         onLogout={handleLogout}
-        collapsed={sidebarCollapsed}
+        collapsed={isMobile ? !sidebarOpen : !sidebarOpen}
+        isMobile={isMobile}
+        sidebarOpen={sidebarOpen}
       />
       <ChatArea
         chat={activeChat}
         user={user}
         onToggleSidebar={toggleSidebar}
-        sidebarCollapsed={sidebarCollapsed}
+        sidebarCollapsed={isMobile ? !sidebarOpen : !sidebarOpen}
+        isMobile={isMobile}
       />
     </div>
   );

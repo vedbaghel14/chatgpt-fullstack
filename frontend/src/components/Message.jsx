@@ -60,13 +60,31 @@ const styles = {
   },
 };
 
-export default function Message({ msg, isUser, firstname }) {
+export default function Message({ msg, isUser, firstname, isMobile }) {
   return (
-    <div style={{ ...styles.messageRow, ...(isUser ? styles.messageRowUser : styles.messageRowAI) }}>
-      <div style={{ ...styles.avatar, ...(isUser ? styles.avatarUser : styles.avatarAI) }}>
-        {isUser ? (firstname || 'U')[0].toUpperCase() : '✨'}
+    <div
+      style={{
+        ...styles.messageRow,
+        ...(isUser ? styles.messageRowUser : styles.messageRowAI),
+      }}
+      className={isMobile ? 'msg-row-mobile' : ''}
+    >
+      <div
+        style={{
+          ...styles.avatar,
+          ...(isUser ? styles.avatarUser : styles.avatarAI),
+        }}
+        className={isMobile ? 'msg-avatar-mobile' : ''}
+      >
+        {isUser ? (firstname || 'U')[0].toUpperCase() : '🤖'}
       </div>
-      <div style={{ ...styles.bubble, ...(isUser ? styles.bubbleUser : styles.bubbleAI) }}>
+      <div
+        style={{
+          ...styles.bubble,
+          ...(isUser ? styles.bubbleUser : styles.bubbleAI),
+        }}
+        className={isMobile ? 'msg-bubble-mobile' : ''}
+      >
         <div style={styles.content}>{msg.content}</div>
         <div style={styles.timestamp}>
           {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

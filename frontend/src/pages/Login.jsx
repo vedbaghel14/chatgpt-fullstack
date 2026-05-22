@@ -198,57 +198,56 @@ export default function Login() {
     <div style={styles.container}>
       <div style={styles.bgOrb1} />
       <div style={styles.bgOrb2} />
-      <div style={styles.card} className="animate-scale-in">
+      <div style={styles.card} className="animate-scale-in login-card-mobile">
         <div style={styles.logoContainer}>
-          <div style={styles.logoIcon}>✨</div>
+          <div style={styles.logoIcon}>🤖</div>
+          <h1 style={styles.title} className="login-title-mobile">ChatGPT Clone</h1>
         </div>
-        <h1 style={styles.title}>Welcome Back</h1>
-        <p style={styles.subtitle}>Sign in to continue with Gemini AI</p>
-
+        <p style={styles.subtitle}>Sign in to continue</p>
         {error && <div style={styles.error}>{error}</div>}
-
         <form onSubmit={handleSubmit}>
           <div style={styles.inputGroup}>
             <label style={styles.label}>Email</label>
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>📧</span>
               <input
+                style={inputStyle}
+                className="login-input-mobile"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={styles.input}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
+                onFocus={(e) => Object.assign(e.target, inputStyle(true))}
+                onBlur={(e) => Object.assign(e.target, inputStyle(false))}
+                autoComplete="email"
               />
             </div>
           </div>
-
           <div style={styles.inputGroup}>
             <label style={styles.label}>Password</label>
             <div style={styles.inputWrapper}>
               <span style={styles.inputIcon}>🔒</span>
               <input
+                style={inputStyle}
+                className="login-input-mobile"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={styles.input}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-glow)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
+                onFocus={(e) => Object.assign(e.target, inputStyle(true))}
+                onBlur={(e) => Object.assign(e.target, inputStyle(false))}
+                autoComplete="current-password"
               />
             </div>
           </div>
-
           <button
+            style={{ ...styles.button, ...(loading ? styles.buttonDisabled : {}) }}
             type="submit"
             disabled={loading}
-            style={{ ...styles.button, ...(loading ? styles.buttonDisabled : {}) }}
           >
-            {loading ? 'Signing In...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-
         <div style={styles.footer}>
           Don't have an account?{' '}
           <Link to="/register" style={styles.link}>Create one</Link>

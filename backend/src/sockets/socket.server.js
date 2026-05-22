@@ -39,7 +39,7 @@ function socketserver(httpserver) {
         console.log("server id is :", socket.id)
 
 
-        socket.on('gemini-ai', async (data) => {
+        socket.on('chatgpt-ai', async (data) => {
             try {
                 const message = await messagemodel.create({
                     user: socket.user._id,
@@ -102,10 +102,10 @@ function socketserver(httpserver) {
                     }
                 })
 
-                socket.emit('gemini-response', response)
+                socket.emit('chatgpt-response', response)
             } catch (err) {
-                console.error('gemini-ai handler error:', err.message)
-                socket.emit('gemini-response', `Error: ${err.message}. Please check your API key configuration.`)
+                console.error('chatgpt-ai handler error:', err.message)
+                socket.emit('chatgpt-response', `Error: ${err.message}. Please check your API key configuration.`)
             }
         })
     });

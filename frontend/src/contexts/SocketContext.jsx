@@ -25,7 +25,7 @@ export function SocketProvider({ children }) {
       console.error('Socket error:', err);
     });
 
-    socket.on('gemini-response', (response) => {
+    socket.on('chatgpt-response', (response) => {
       responseCallbacks.current.forEach((cb) => cb(response));
     });
 
@@ -36,7 +36,7 @@ export function SocketProvider({ children }) {
 
   const sendMessage = useCallback((chatId, content) => {
     if (socketRef.current?.connected) {
-      socketRef.current.emit('gemini-ai', { chat: chatId, content });
+      socketRef.current.emit('chatgpt-ai', { chat: chatId, content });
     }
   }, []);
 
