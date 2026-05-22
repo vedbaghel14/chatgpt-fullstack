@@ -20,7 +20,9 @@ function ProtectedRoute({ children }) {
           width: '40px',
           height: '40px',
           borderRadius: '50%',
-          border: '3px solid var(--border)',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: 'var(--border)',
           borderTopColor: 'var(--accent)',
           animation: 'spin 0.8s linear infinite',
         }} />
@@ -46,7 +48,9 @@ function PublicRoute({ children }) {
           width: '40px',
           height: '40px',
           borderRadius: '50%',
-          border: '3px solid var(--border)',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: 'var(--border)',
           borderTopColor: 'var(--accent)',
           animation: 'spin 0.8s linear infinite',
         }} />

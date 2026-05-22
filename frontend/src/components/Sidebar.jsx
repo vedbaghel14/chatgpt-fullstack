@@ -88,7 +88,9 @@ const styles = {
     gap: '10px',
     fontSize: '14px',
     color: 'var(--text-secondary)',
-    border: '1px solid transparent',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
   },
   chatItemActive: {
     background: 'var(--bg-hover)',
